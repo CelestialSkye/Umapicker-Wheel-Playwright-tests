@@ -1,5 +1,7 @@
 # Uma-Picker QA
 
+![Playwright Tests](https://github.com/CelestialSkye/Umapicker-Wheel-Playwright-tests/actions/workflows/playwright.yml/badge.svg)
+
 Manual and automated testing suite for [Uma-Picker](https://uma-picker.onrender.com) —
 a wheel spin game that picks your next Umamusume career, faithfully replicating
 the wheel mini-game from the Umamusume mobile game.
