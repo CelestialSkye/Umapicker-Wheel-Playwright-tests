@@ -20,8 +20,8 @@ and spin to get a random result.
 
 ### Automated Testing
 
-- 20 Playwright + TypeScript automated tests
-- Covers Spin Feature, Filter Feature, UI & Visuals, and bug regression coverage
+- 21 Playwright + TypeScript automated tests
+- Covers Spin Feature, Filter Feature, UI & Visuals, bug regression, and accessibility
 - Tests run against live production environment
 - Cross-browser CI on every push/PR (Chromium + Firefox + WebKit, run in a parallel matrix)
 
@@ -31,6 +31,7 @@ Spin Feature → TAP/STOP button, wheel behavior, result overlay
 Filter Feature → character selection, search, confirm, counter
 UI & Visuals → page title, console errors, mobile layout, music toggle
 Bug Regression → winner modal dismiss behavior, filter button lockout during spin
+Accessibility → automated WCAG 2 A/AA scan (axe-core) on the main page
 
 ## Bugs Found
 
@@ -38,6 +39,7 @@ Bug Regression → winner modal dismiss behavior, filter button lockout during s
 | ------- | ---------------------------------------------------------------- | -------- | -------- | ------ |
 | BUG-001 | Results overlay not dismissed when clicking winner avatar div    | Medium   | High     | Fixed  |
 | BUG-002 | Filter button remains active while wheel is spinning             | High     | High     | Fixed  |
+| BUG-003 | GitHub icon link had no accessible name (WCAG 2 A, serious)      | Medium   | Medium   | Fixed  |
 
 Both fixes shipped with a Playwright regression test that failed against the bug and passes against the fix, verified live on production.
 
@@ -80,6 +82,7 @@ Migrated GitHub Actions from a single sequential job (all 3 browsers in one runn
 | Qase                    | Test case management and execution                   |
 | Jira                    | Bug tracking                                         |
 | Browser DevTools        | Console monitoring, DOM inspection, mobile emulation |
+| @axe-core/playwright    | Automated accessibility (WCAG) scans                 |
 
 ## How to Run Automated Tests
 
@@ -104,7 +107,8 @@ tests/
 ├── filter-feature.spec.ts → character filter and selection
 ├── spin-feature.spec.ts → wheel spin and result behavior
 ├── ui-visuals.spec.ts → UI, layout, and visual checks
-└── bug-regression.spec.ts → BUG-001 and BUG-002 regression coverage
+├── bug-regression.spec.ts → BUG-001 and BUG-002 regression coverage
+└── accessibility.spec.ts → automated WCAG 2 A/AA scan (axe-core)
 
 ## Notes
 
