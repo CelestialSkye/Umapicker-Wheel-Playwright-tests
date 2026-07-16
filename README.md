@@ -20,8 +20,8 @@ and spin to get a random result.
 
 ### Automated Testing
 
-- 18 Playwright + TypeScript automated tests
-- Covers Spin Feature, Filter Feature, and UI & Visuals
+- 20 Playwright + TypeScript automated tests
+- Covers Spin Feature, Filter Feature, UI & Visuals, and bug regression coverage
 - Tests run against live production environment
 
 ### Feature Areas Tested
@@ -29,13 +29,16 @@ and spin to get a random result.
 Spin Feature → TAP/STOP button, wheel behavior, result overlay
 Filter Feature → character selection, search, confirm, counter
 UI & Visuals → page title, console errors, mobile layout, music toggle
+Bug Regression → winner modal dismiss behavior, filter button lockout during spin
 
 ## Bugs Found
 
 | ID      | Title                                                         | Severity | Priority | Status |
-| ------- | ------------------------------------------------------------- | -------- | -------- | ------ |
-| BUG-001 | Results overlay not dismissed when clicking winner avatar div | Medium   | High     | Open   |
-| BUG-002 | Filter button remains active while wheel is spinning          | High     | High     | Open   |
+| ------- | ---------------------------------------------------------------- | -------- | -------- | ------ |
+| BUG-001 | Results overlay not dismissed when clicking winner avatar div    | Medium   | High     | Fixed  |
+| BUG-002 | Filter button remains active while wheel is spinning             | High     | High     | Fixed  |
+
+Both fixes shipped with a Playwright regression test that failed against the bug and passes against the fix, verified live on production.
 
 ### BUG-001 Detail
 
@@ -49,6 +52,8 @@ Click inside the winner avatar and text div
 Actual: Overlay does not dismiss
 Expected: Clicking anywhere dismisses the overlay
 
+Root cause: the winner modal's content wrapper called `e.stopPropagation()` on click, blocking the outer overlay's dismiss handler from ever firing when the click landed on the result text or image.
+
 ### BUG-002 Detail
 
 Steps:
@@ -59,6 +64,8 @@ Click Filter button while wheel is spinning
 
 Actual: Filter modal opens during active spin
 Expected: Filter button disabled during spin
+
+Root cause: the filter-open button was never wired to the app's `isSpinning` state, despite the underlying `Button` component already fully supporting a `disabled` prop.
 
 ## Tools Used
 
@@ -91,7 +98,8 @@ npx playwright show-report
 tests/
 ├── filter-feature.spec.ts → character filter and selection
 ├── spin-feature.spec.ts → wheel spin and result behavior
-└── ui-visuals.spec.ts → UI, layout, and visual checks
+├── ui-visuals.spec.ts → UI, layout, and visual checks
+└── bug-regression.spec.ts → BUG-001 and BUG-002 regression coverage
 
 ## Notes
 
