@@ -23,6 +23,7 @@ and spin to get a random result.
 - 20 Playwright + TypeScript automated tests
 - Covers Spin Feature, Filter Feature, UI & Visuals, and bug regression coverage
 - Tests run against live production environment
+- Cross-browser CI on every push/PR (Chromium + Firefox + WebKit, run in a parallel matrix)
 
 ### Feature Areas Tested
 
@@ -66,6 +67,10 @@ Actual: Filter modal opens during active spin
 Expected: Filter button disabled during spin
 
 Root cause: the filter-open button was never wired to the app's `isSpinning` state, despite the underlying `Button` component already fully supporting a `disabled` prop.
+
+## CI Performance
+
+Migrated GitHub Actions from a single sequential job (all 3 browsers in one runner) to a parallel matrix (one job per browser). Measured wall-clock CI time dropped from ~330s to 168s (~49% faster).
 
 ## Tools Used
 
